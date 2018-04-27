@@ -20,6 +20,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 
 namespace Square.Connect.Model
 {
@@ -39,11 +40,14 @@ namespace Square.Connect.Model
             this.BuyerTenderedMoney = BuyerTenderedMoney;
             this.ChangeBackMoney = ChangeBackMoney;
         }
-        
+
+        [Key]
+        public Guid FakeId { get { return Guid.NewGuid(); } set { Guid g = value; } }
         /// <summary>
         /// The total amount of cash provided by the buyer, before change is given.
         /// </summary>
         /// <value>The total amount of cash provided by the buyer, before change is given.</value>
+        /// 
         [DataMember(Name="buyer_tendered_money", EmitDefaultValue=false)]
         public Money BuyerTenderedMoney { get; set; }
         /// <summary>

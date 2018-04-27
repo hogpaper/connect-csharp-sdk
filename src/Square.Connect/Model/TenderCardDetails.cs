@@ -27,40 +27,9 @@ namespace Square.Connect.Model
     /// Represents additional details of a tender with &#x60;type&#x60; &#x60;CARD&#x60; or &#x60;SQUARE_GIFT_CARD&#x60;
     /// </summary>
     [DataContract]
-    public partial class TenderCardDetails :  IEquatable<TenderCardDetails>, IValidatableObject
+    public partial class TenderCardDetails : IEquatable<TenderCardDetails>, IValidatableObject
     {
-        /// <summary>
-        /// The credit card payment's current state (such as `AUTHORIZED` or `CAPTURED`). See [TenderCardDetailsStatus](#type-tendercarddetailsstatus) for possible values.
-        /// </summary>
-        /// <value>The credit card payment's current state (such as `AUTHORIZED` or `CAPTURED`). See [TenderCardDetailsStatus](#type-tendercarddetailsstatus) for possible values.</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum StatusEnum
-        {
-            
-            /// <summary>
-            /// Enum AUTHORIZED for "AUTHORIZED"
-            /// </summary>
-            [EnumMember(Value = "AUTHORIZED")]
-            AUTHORIZED,
-            
-            /// <summary>
-            /// Enum CAPTURED for "CAPTURED"
-            /// </summary>
-            [EnumMember(Value = "CAPTURED")]
-            CAPTURED,
-            
-            /// <summary>
-            /// Enum VOIDED for "VOIDED"
-            /// </summary>
-            [EnumMember(Value = "VOIDED")]
-            VOIDED,
-            
-            /// <summary>
-            /// Enum FAILED for "FAILED"
-            /// </summary>
-            [EnumMember(Value = "FAILED")]
-            FAILED
-        }
+        private Guid _id;
 
         /// <summary>
         /// The method used to enter the card's details for the transaction.
@@ -69,31 +38,31 @@ namespace Square.Connect.Model
         [JsonConverter(typeof(StringEnumConverter))]
         public enum EntryMethodEnum
         {
-            
+
             /// <summary>
             /// Enum SWIPED for "SWIPED"
             /// </summary>
             [EnumMember(Value = "SWIPED")]
             SWIPED,
-            
+
             /// <summary>
             /// Enum KEYED for "KEYED"
             /// </summary>
             [EnumMember(Value = "KEYED")]
             KEYED,
-            
+
             /// <summary>
             /// Enum EMV for "EMV"
             /// </summary>
             [EnumMember(Value = "EMV")]
             EMV,
-            
+
             /// <summary>
             /// Enum ONFILE for "ON_FILE"
             /// </summary>
             [EnumMember(Value = "ON_FILE")]
             ONFILE,
-            
+
             /// <summary>
             /// Enum CONTACTLESS for "CONTACTLESS"
             /// </summary>
@@ -101,17 +70,33 @@ namespace Square.Connect.Model
             CONTACTLESS
         }
 
+        [DataMember(Name = "Id", EmitDefaultValue = false)]
+        [Key]
+        public Guid Id
+        {
+            get
+            {
+                return _id == Guid.Empty ? Guid.NewGuid() : _id;
+            }
+            set
+            {
+                _id = value;
+            }
+        }
+
+        [DataMember(Name = "TenderId", EmitDefaultValue = false)]
+        public string TenderId { get; set; }
         /// <summary>
         /// The credit card payment's current state (such as `AUTHORIZED` or `CAPTURED`). See [TenderCardDetailsStatus](#type-tendercarddetailsstatus) for possible values.
         /// </summary>
         /// <value>The credit card payment's current state (such as `AUTHORIZED` or `CAPTURED`). See [TenderCardDetailsStatus](#type-tendercarddetailsstatus) for possible values.</value>
-        [DataMember(Name="status", EmitDefaultValue=false)]
-        public StatusEnum? Status { get; set; }
+        [DataMember(Name = "status", EmitDefaultValue = false)]
+        public TenderCardDetailsStatus? Status { get; set; }
         /// <summary>
         /// The method used to enter the card's details for the transaction.
         /// </summary>
         /// <value>The method used to enter the card's details for the transaction.</value>
-        [DataMember(Name="entry_method", EmitDefaultValue=false)]
+        [DataMember(Name = "entry_method", EmitDefaultValue = false)]
         public EntryMethodEnum? EntryMethod { get; set; }
         /// <summary>
         /// Initializes a new instance of the <see cref="TenderCardDetails" /> class.
@@ -119,18 +104,19 @@ namespace Square.Connect.Model
         /// <param name="Status">The credit card payment&#39;s current state (such as &#x60;AUTHORIZED&#x60; or &#x60;CAPTURED&#x60;). See [TenderCardDetailsStatus](#type-tendercarddetailsstatus) for possible values..</param>
         /// <param name="Card">The credit card&#39;s non-confidential details..</param>
         /// <param name="EntryMethod">The method used to enter the card&#39;s details for the transaction..</param>
-        public TenderCardDetails(StatusEnum? Status = default(StatusEnum?), Card Card = default(Card), EntryMethodEnum? EntryMethod = default(EntryMethodEnum?))
+        public TenderCardDetails(string TenderId, TenderCardDetailsStatus? Status = default(TenderCardDetailsStatus?), Card Card = default(Card), EntryMethodEnum? EntryMethod = default(EntryMethodEnum?))
         {
+            this.TenderId = TenderId;
             this.Status = Status;
             this.Card = Card;
             this.EntryMethod = EntryMethod;
         }
-        
+
         /// <summary>
         /// The credit card&#39;s non-confidential details.
         /// </summary>
         /// <value>The credit card&#39;s non-confidential details.</value>
-        [DataMember(Name="card", EmitDefaultValue=false)]
+        [DataMember(Name = "card", EmitDefaultValue = false)]
         public Card Card { get; set; }
         /// <summary>
         /// Returns the string presentation of the object
@@ -146,7 +132,7 @@ namespace Square.Connect.Model
             sb.Append("}\n");
             return sb.ToString();
         }
-  
+
         /// <summary>
         /// Returns the JSON string presentation of the object
         /// </summary>
@@ -178,17 +164,17 @@ namespace Square.Connect.Model
             if (other == null)
                 return false;
 
-            return 
+            return
                 (
                     this.Status == other.Status ||
                     this.Status != null &&
                     this.Status.Equals(other.Status)
-                ) && 
+                ) &&
                 (
                     this.Card == other.Card ||
                     this.Card != null &&
                     this.Card.Equals(other.Card)
-                ) && 
+                ) &&
                 (
                     this.EntryMethod == other.EntryMethod ||
                     this.EntryMethod != null &&
@@ -218,7 +204,7 @@ namespace Square.Connect.Model
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        { 
+        {
             yield break;
         }
     }

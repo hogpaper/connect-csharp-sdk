@@ -109,7 +109,7 @@ namespace Square.Connect.Model
         /// <param name="CardholderName">The cardholder name. This value is present only if this object represents a customer&#39;s card on file..</param>
         /// <param name="BillingAddress">The card&#39;s billing address. This value is present only if this object represents a customer&#39;s card on file..</param>
         /// <param name="Fingerprint">The unique string fingerprint for the card.  The fingerprint is based on the credit card number and is unique to the merchant.  If a card is used at multiple locations for the same merchant, it will have the same fingerprint in each case. Note: Fingerprint may not exist on old transactions..</param>
-        public Card(string Id = default(string), CardBrandEnum? CardBrand = default(CardBrandEnum?), string Last4 = default(string), long? ExpMonth = default(long?), long? ExpYear = default(long?), string CardholderName = default(string), Address BillingAddress = default(Address), string Fingerprint = default(string))
+        public Card(Guid Id = default(Guid), CardBrandEnum? CardBrand = default(CardBrandEnum?), string Last4 = default(string), long? ExpMonth = default(long?), long? ExpYear = default(long?), string CardholderName = default(string), Address BillingAddress = default(Address), string Fingerprint = default(string))
         {
             this.Id = Id;
             this.CardBrand = CardBrand;
@@ -120,13 +120,25 @@ namespace Square.Connect.Model
             this.BillingAddress = BillingAddress;
             this.Fingerprint = Fingerprint;
         }
-        
+
+        private Guid _id;
+
         /// <summary>
         /// The card&#39;s unique ID, if any.
         /// </summary>
         /// <value>The card&#39;s unique ID, if any.</value>
         [DataMember(Name="id", EmitDefaultValue=false)]
-        public string Id { get; set; }
+        public Guid Id
+        {
+            get
+            {
+                return _id == Guid.Empty ? Guid.NewGuid() : _id;
+            }
+            set
+            {
+                _id = value;
+            }
+        }
         /// <summary>
         /// The last 4 digits of the card&#39;s number.
         /// </summary>

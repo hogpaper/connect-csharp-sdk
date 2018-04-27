@@ -96,6 +96,7 @@ namespace Square.Connect.Model
         /// </summary>
         /// <value>The unique ID for this [AdditionalRecipientReceivable](#type-additionalrecipientreceivable), assigned by the server.</value>
         [DataMember(Name="receivable_id", EmitDefaultValue=false)]
+        [Key]
         public string ReceivableId { get; set; }
         /// <summary>
         /// Returns the string presentation of the object

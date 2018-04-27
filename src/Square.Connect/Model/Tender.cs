@@ -131,11 +131,13 @@ namespace Square.Connect.Model
         /// </summary>
         /// <value>The tender&#39;s unique ID.</value>
         [DataMember(Name="id", EmitDefaultValue=false)]
+        [Key]
         public string Id { get; set; }
         /// <summary>
         /// The ID of the transaction&#39;s associated location.
         /// </summary>
         /// <value>The ID of the transaction&#39;s associated location.</value>
+        /// 
         [DataMember(Name="location_id", EmitDefaultValue=false)]
         public string LocationId { get; set; }
         /// <summary>
@@ -185,18 +187,21 @@ namespace Square.Connect.Model
         /// </summary>
         /// <value>The details of the card tender.  This value is present only if the value of &#x60;type&#x60; is &#x60;CARD&#x60;.</value>
         [DataMember(Name="card_details", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public TenderCardDetails CardDetails { get; set; }
         /// <summary>
         /// The details of the cash tender.  This value is present only if the value of &#x60;type&#x60; is &#x60;CASH&#x60;.
         /// </summary>
         /// <value>The details of the cash tender.  This value is present only if the value of &#x60;type&#x60; is &#x60;CASH&#x60;.</value>
         [DataMember(Name="cash_details", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public TenderCashDetails CashDetails { get; set; }
         /// <summary>
         /// Additional recipients (other than the merchant) receiving a portion of this tender. For example, fees assessed on the purchase by a third party integration.
         /// </summary>
         /// <value>Additional recipients (other than the merchant) receiving a portion of this tender. For example, fees assessed on the purchase by a third party integration.</value>
         [DataMember(Name="additional_recipients", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public List<AdditionalRecipient> AdditionalRecipients { get; set; }
         /// <summary>
         /// Returns the string presentation of the object

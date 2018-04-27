@@ -29,45 +29,13 @@ namespace Square.Connect.Model
     [DataContract]
     public partial class Refund :  IEquatable<Refund>, IValidatableObject
     {
-        /// <summary>
-        /// The current status of the refund (`PENDING`, `APPROVED`, `REJECTED`, or `FAILED`).
-        /// </summary>
-        /// <value>The current status of the refund (`PENDING`, `APPROVED`, `REJECTED`, or `FAILED`).</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum StatusEnum
-        {
-            
-            /// <summary>
-            /// Enum PENDING for "PENDING"
-            /// </summary>
-            [EnumMember(Value = "PENDING")]
-            PENDING,
-            
-            /// <summary>
-            /// Enum APPROVED for "APPROVED"
-            /// </summary>
-            [EnumMember(Value = "APPROVED")]
-            APPROVED,
-            
-            /// <summary>
-            /// Enum REJECTED for "REJECTED"
-            /// </summary>
-            [EnumMember(Value = "REJECTED")]
-            REJECTED,
-            
-            /// <summary>
-            /// Enum FAILED for "FAILED"
-            /// </summary>
-            [EnumMember(Value = "FAILED")]
-            FAILED
-        }
-
+        
         /// <summary>
         /// The current status of the refund (`PENDING`, `APPROVED`, `REJECTED`, or `FAILED`).
         /// </summary>
         /// <value>The current status of the refund (`PENDING`, `APPROVED`, `REJECTED`, or `FAILED`).</value>
         [DataMember(Name="status", EmitDefaultValue=false)]
-        public StatusEnum? Status { get; set; }
+        public RefundStatus? Status { get; set; }
         /// <summary>
         /// Initializes a new instance of the <see cref="Refund" /> class.
         /// </summary>
@@ -86,7 +54,7 @@ namespace Square.Connect.Model
         /// <param name="Status">The current status of the refund (&#x60;PENDING&#x60;, &#x60;APPROVED&#x60;, &#x60;REJECTED&#x60;, or &#x60;FAILED&#x60;). (required).</param>
         /// <param name="ProcessingFeeMoney">The amount of Square processing fee money refunded to the *merchant*..</param>
         /// <param name="AdditionalRecipients">Additional recipients (other than the merchant) receiving a portion of this refund. For example, fees assessed on a refund of a purchase by a third party integration..</param>
-        public Refund(string Id = default(string), string LocationId = default(string), string TransactionId = default(string), string TenderId = default(string), string CreatedAt = default(string), string Reason = default(string), Money AmountMoney = default(Money), StatusEnum? Status = default(StatusEnum?), Money ProcessingFeeMoney = default(Money), List<AdditionalRecipient> AdditionalRecipients = default(List<AdditionalRecipient>))
+        public Refund(string Id = default(string), string LocationId = default(string), string TransactionId = default(string), string TenderId = default(string), string CreatedAt = default(string), string Reason = default(string), Money AmountMoney = default(Money), RefundStatus? Status = default(RefundStatus?), Money ProcessingFeeMoney = default(Money), List<AdditionalRecipient> AdditionalRecipients = default(List<AdditionalRecipient>))
         {
             // to ensure "Id" is required (not null)
             if (Id == null)

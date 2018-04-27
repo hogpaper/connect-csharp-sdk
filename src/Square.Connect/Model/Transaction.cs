@@ -20,6 +20,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
+using System.Xml;
 
 namespace Square.Connect.Model
 {
@@ -92,6 +93,11 @@ namespace Square.Connect.Model
         /// <value>The Square product that processed the transaction.</value>
         [DataMember(Name="product", EmitDefaultValue=false)]
         public ProductEnum? Product { get; set; }
+
+        public Transaction()
+        {
+
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="Transaction" /> class.
         /// </summary>
@@ -131,6 +137,19 @@ namespace Square.Connect.Model
         /// <value>The ID of the transaction&#39;s associated location.</value>
         [DataMember(Name="location_id", EmitDefaultValue=false)]
         public string LocationId { get; set; }
+
+        public DateTime CreatedDate
+        {
+            get
+            {
+                return XmlConvert.ToDateTime(CreatedAt, XmlDateTimeSerializationMode.Local);
+            }
+            set
+            {
+                CreatedAt = XmlConvert.ToString(value, XmlDateTimeSerializationMode.Local);
+            }
+        }
+
         /// <summary>
         /// The time when the transaction was created, in RFC 3339 format.
         /// </summary>
@@ -142,12 +161,135 @@ namespace Square.Connect.Model
         /// </summary>
         /// <value>The tenders used to pay in the transaction.</value>
         [DataMember(Name="tenders", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public List<Tender> Tenders { get; set; }
+
+        private decimal _totalAmount = 0;
+        [DataMember(Name = "TotalAmount", EmitDefaultValue = false)]
+        public decimal TotalAmount
+        {
+            get
+            {
+                if (Tenders != null)
+                {
+                    decimal? total = Tenders.Sum(tender => tender.AmountMoney.Amount / 100);
+
+                    if (!total.HasValue)
+                        total = 0;
+
+                    _totalAmount = total.Value;
+                }
+
+                return _totalAmount;
+            }
+            set
+            {
+                _totalAmount = value;
+            }
+        }
+
+        private decimal _totalTips = 0;
+        [DataMember(Name= "TotalTips", EmitDefaultValue=false)]
+        public decimal TotalTips
+        {
+            get
+            {
+                if (Tenders != null)
+                {
+                    decimal? total = 0;
+
+                    if (Tenders != null && Tenders.Count > 0)
+                        total = Tenders.Sum(tender => tender.TipMoney == null ? 0 : (tender.TipMoney.Amount / 100));
+
+                    _totalTips = total.Value;
+                }
+
+                return _totalTips;
+            }
+            set
+            {
+                _totalTips = value;
+            }
+        }
+
+        private decimal _totalFees = 0;
+        [DataMember(Name= "TotalFees", EmitDefaultValue=false)]
+        public decimal TotalFees
+        {
+            get
+            {
+                if (Tenders != null)
+                {
+                    decimal? total = 0;
+
+                    if (Tenders != null && Tenders.Count > 0)
+                        total = Tenders.Sum(tender => tender.ProcessingFeeMoney.Amount / 100);
+
+                    _totalFees = total.Value;
+                }
+
+                return _totalFees;
+            }
+            set
+            {
+                _totalFees = value;
+            }
+        }
+
+        private decimal _totalRefund = 0;
+        [DataMember(Name= "TotalRefund", EmitDefaultValue=false)]
+        public decimal TotalRefund
+        {
+            get
+            {
+                if (Refunds != null)
+                {
+                    decimal? total = 0;
+
+                    if (Refunds != null && Refunds.Count > 0)
+                        total = Refunds.Sum(refund => refund.AmountMoney.Amount / 100);
+
+                    _totalRefund = total.Value;
+                }
+
+                return _totalRefund;
+            }
+            set
+            {
+                _totalRefund = value;
+            }
+        }
+
+        private decimal _totalRefundFees = 0;
+        [DataMember(Name= "TotalRefundFees", EmitDefaultValue=false)]
+        public decimal TotalRefundFees
+        {
+            get
+            {
+                if (Refunds != null)
+                {
+                    decimal? total = 0;
+
+                    if (Refunds != null && Refunds.Count > 0)
+                        total = Refunds.Sum(refund => refund.ProcessingFeeMoney.Amount / 100);
+
+                    _totalRefundFees = total.Value;
+                }
+
+                return _totalRefundFees;
+            }
+            set
+            {
+                _totalRefundFees = value;
+            }
+        }
+
         /// <summary>
         /// Refunds that have been applied to any tender in the transaction.
         /// </summary>
         /// <value>Refunds that have been applied to any tender in the transaction.</value>
         [DataMember(Name="refunds", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public List<Refund> Refunds { get; set; }
         /// <summary>
         /// If the transaction was created with the [Charge](#endpoint-charge) endpoint, this value is the same as the value provided for the &#x60;reference_id&#x60; parameter in the request to that endpoint. Otherwise, it is not set.
@@ -166,6 +308,7 @@ namespace Square.Connect.Model
         /// </summary>
         /// <value>The shipping address provided in the request, if any.</value>
         [DataMember(Name="shipping_address", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public Address ShippingAddress { get; set; }
         /// <summary>
         /// The order_id is an identifier for the order associated with this transaction, if any.
@@ -201,7 +344,7 @@ namespace Square.Connect.Model
         /// <returns>JSON string presentation of the object</returns>
         public string ToJson()
         {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
+            return JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
         }
 
         /// <summary>
