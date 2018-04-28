@@ -109,7 +109,7 @@ namespace Square.Connect.Api
         /// <param name="limit">The maximum number of payments to return in a single response. This value cannot exceed 200. (optional)</param>
         /// <param name="batchToken">A pagination cursor to retrieve the next set of results for your original query to the endpoint. (optional)</param>
         /// <returns>List&lt;V1Payment&gt;</returns>
-        List<V1Payment> ListPayments (string locationId, string order = null, string beginTime = null, string endTime = null, int? limit = null, string batchToken = null);
+        List<V1Payment> ListPayments (ref string batchToken, string locationId, string order = null, string beginTime = null, string endTime = null, int? limit = null);
 
         /// <summary>
         /// Provides summary information for all payments taken by a merchant or any of the merchant&#39;s mobile staff during a date range. Date ranges cannot exceed one year in length. See Date ranges for details of inclusive and exclusive dates.
@@ -1206,10 +1206,11 @@ namespace Square.Connect.Api
         /// <param name="limit">The maximum number of payments to return in a single response. This value cannot exceed 200. (optional)</param>
         /// <param name="batchToken">A pagination cursor to retrieve the next set of results for your original query to the endpoint. (optional)</param>
         /// <returns>List&lt;V1Payment&gt;</returns>
-        public List<V1Payment> ListPayments (string locationId, string order = null, string beginTime = null, string endTime = null, int? limit = null, string batchToken = null)
+        public List<V1Payment> ListPayments (ref string batchToken, string locationId, string order = null, string beginTime = null, string endTime = null, int? limit = null)
         {
-             ApiResponse<List<V1Payment>> localVarResponse = ListPaymentsWithHttpInfo(locationId, order, beginTime, endTime, limit, batchToken);
-             return localVarResponse.Data;
+            ApiResponse<List<V1Payment>> localVarResponse = ListPaymentsWithHttpInfo(locationId, order, beginTime, endTime, limit, batchToken);
+            batchToken = localVarResponse.BatchToken;
+            return localVarResponse.Data;
         }
 
         /// <summary>

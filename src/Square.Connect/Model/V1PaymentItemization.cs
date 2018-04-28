@@ -80,6 +80,12 @@ namespace Square.Connect.Model
         /// <value>The type of purchase that the itemization represents, such as an ITEM or CUSTOM_AMOUNT</value>
         [DataMember(Name="itemization_type", EmitDefaultValue=false)]
         public ItemizationTypeEnum? ItemizationType { get; set; }
+
+        public V1PaymentItemization()
+        {
+
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="V1PaymentItemization" /> class.
         /// </summary>
@@ -114,7 +120,26 @@ namespace Square.Connect.Model
             this.Discounts = Discounts;
             this.Modifiers = Modifiers;
         }
-        
+
+        private Guid _id;
+
+        [DataMember(Name = "Id", EmitDefaultValue = false)]
+        [Key]
+        public Guid Id
+        {
+            get
+            {
+                if (_id == Guid.Empty)
+                    _id = Guid.NewGuid();
+
+                return _id;
+            }
+            set
+            {
+                _id = value;
+            }
+        }
+
         /// <summary>
         /// The item&#39;s name.
         /// </summary>
@@ -150,48 +175,61 @@ namespace Square.Connect.Model
         /// </summary>
         /// <value>The total cost of the item, including all taxes and discounts.</value>
         [DataMember(Name="total_money", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public V1Money TotalMoney { get; set; }
+
         /// <summary>
         /// The cost of a single unit of this item.
         /// </summary>
         /// <value>The cost of a single unit of this item.</value>
         [DataMember(Name="single_quantity_money", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public V1Money SingleQuantityMoney { get; set; }
+
         /// <summary>
         /// The total cost of the itemization and its modifiers, not including taxes or discounts.
         /// </summary>
         /// <value>The total cost of the itemization and its modifiers, not including taxes or discounts.</value>
         [DataMember(Name="gross_sales_money", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public V1Money GrossSalesMoney { get; set; }
+
         /// <summary>
         /// The total of all discounts applied to the itemization. This value is always negative or zero.
         /// </summary>
         /// <value>The total of all discounts applied to the itemization. This value is always negative or zero.</value>
         [DataMember(Name="discount_money", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public V1Money DiscountMoney { get; set; }
+
         /// <summary>
         /// The sum of gross_sales_money and discount_money.
         /// </summary>
         /// <value>The sum of gross_sales_money and discount_money.</value>
         [DataMember(Name="net_sales_money", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public V1Money NetSalesMoney { get; set; }
+
         /// <summary>
         /// All taxes applied to this itemization.
         /// </summary>
         /// <value>All taxes applied to this itemization.</value>
         [DataMember(Name="taxes", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public List<V1PaymentTax> Taxes { get; set; }
         /// <summary>
         /// All discounts applied to this itemization.
         /// </summary>
         /// <value>All discounts applied to this itemization.</value>
         [DataMember(Name="discounts", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public List<V1PaymentDiscount> Discounts { get; set; }
         /// <summary>
         /// All modifier options applied to this itemization.
         /// </summary>
         /// <value>All modifier options applied to this itemization.</value>
         [DataMember(Name="modifiers", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public List<V1PaymentModifier> Modifiers { get; set; }
         /// <summary>
         /// Returns the string presentation of the object

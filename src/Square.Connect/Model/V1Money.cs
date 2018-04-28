@@ -1124,6 +1124,12 @@ namespace Square.Connect.Model
         /// <value></value>
         [DataMember(Name="currency_code", EmitDefaultValue=false)]
         public CurrencyCodeEnum? CurrencyCode { get; set; }
+
+        public V1Money()
+        {
+
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="V1Money" /> class.
         /// </summary>

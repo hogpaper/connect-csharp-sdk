@@ -34,7 +34,7 @@ namespace Square.Connect.Model
         /// </summary>
         /// <value>The type of tender.</value>
         [JsonConverter(typeof(StringEnumConverter))]
-        public enum TypeEnum
+        public enum V1TenderType
         {
             
             /// <summary>
@@ -91,7 +91,7 @@ namespace Square.Connect.Model
         /// </summary>
         /// <value>The brand of credit card provided.</value>
         [JsonConverter(typeof(StringEnumConverter))]
-        public enum CardBrandEnum
+        public enum V1CardBrandEnum
         {
             
             /// <summary>
@@ -146,7 +146,13 @@ namespace Square.Connect.Model
             /// Enum SQUAREGIFTCARD for "SQUARE_GIFT_CARD"
             /// </summary>
             [EnumMember(Value = "SQUARE_GIFT_CARD")]
-            SQUAREGIFTCARD
+            SQUAREGIFTCARD,
+
+            /// <summary>
+            /// Enum SQUAREGIFTCARDV2 for "SQUARE_GIFT_CARD_V2"
+            /// </summary>
+            [EnumMember(Value = "SQUARE_GIFT_CARD_V2")]
+            SQUAREGIFTCARDV2
         }
 
         /// <summary>
@@ -205,13 +211,13 @@ namespace Square.Connect.Model
         /// </summary>
         /// <value>The type of tender.</value>
         [DataMember(Name="type", EmitDefaultValue=false)]
-        public TypeEnum? Type { get; set; }
+        public V1TenderType? Type { get; set; }
         /// <summary>
         /// The brand of credit card provided.
         /// </summary>
         /// <value>The brand of credit card provided.</value>
         [DataMember(Name="card_brand", EmitDefaultValue=false)]
-        public CardBrandEnum? CardBrand { get; set; }
+        public V1CardBrandEnum? CardBrand { get; set; }
         /// <summary>
         /// The tender's unique ID.
         /// </summary>
@@ -235,7 +241,7 @@ namespace Square.Connect.Model
         /// <param name="ChangeBackMoney">The amount of total_money returned to the buyer as change..</param>
         /// <param name="RefundedMoney">The total of all refunds applied to this tender. This amount is always negative or zero..</param>
         /// <param name="IsExchange">Indicates whether or not the tender is associated with an exchange. If is_exchange is true, the tender represents the value of goods returned in an exchange not the actual money paid. The exchange value reduces the tender amounts needed to pay for items purchased in the exchange..</param>
-        public V1Tender(string Id = default(string), TypeEnum? Type = default(TypeEnum?), string Name = default(string), string EmployeeId = default(string), string ReceiptUrl = default(string), CardBrandEnum? CardBrand = default(CardBrandEnum?), string PanSuffix = default(string), EntryMethodEnum? EntryMethod = default(EntryMethodEnum?), string PaymentNote = default(string), V1Money TotalMoney = default(V1Money), V1Money TenderedMoney = default(V1Money), V1Money ChangeBackMoney = default(V1Money), V1Money RefundedMoney = default(V1Money), bool? IsExchange = default(bool?))
+        public V1Tender(string Id = default(string), V1TenderType? Type = default(V1TenderType?), string Name = default(string), string EmployeeId = default(string), string ReceiptUrl = default(string), V1CardBrandEnum? CardBrand = default(V1CardBrandEnum?), string PanSuffix = default(string), EntryMethodEnum? EntryMethod = default(EntryMethodEnum?), string PaymentNote = default(string), V1Money TotalMoney = default(V1Money), V1Money TenderedMoney = default(V1Money), V1Money ChangeBackMoney = default(V1Money), V1Money RefundedMoney = default(V1Money), bool? IsExchange = default(bool?))
         {
             this.Id = Id;
             this.Type = Type;

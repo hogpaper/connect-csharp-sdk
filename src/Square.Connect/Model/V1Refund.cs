@@ -34,7 +34,7 @@ namespace Square.Connect.Model
         /// </summary>
         /// <value>The type of refund </value>
         [JsonConverter(typeof(StringEnumConverter))]
-        public enum TypeEnum
+        public enum RefundType
         {
             
             /// <summary>
@@ -55,7 +55,7 @@ namespace Square.Connect.Model
         /// </summary>
         /// <value>The type of refund </value>
         [DataMember(Name="type", EmitDefaultValue=false)]
-        public TypeEnum? Type { get; set; }
+        public RefundType? Type { get; set; }
         /// <summary>
         /// Initializes a new instance of the <see cref="V1Refund" /> class.
         /// </summary>
@@ -67,7 +67,7 @@ namespace Square.Connect.Model
         /// <param name="PaymentId">A Square-issued ID associated with the refund. For single-tender refunds, payment_id is the ID of the original payment ID. For split-tender refunds, payment_id is the ID of the original tender. For exchange-based refunds (is_exchange &#x3D;&#x3D; true), payment_id is the ID of the original payment ID even if the payment includes other tenders..</param>
         /// <param name="MerchantId">.</param>
         /// <param name="IsExchange">Indicates whether or not the refund is associated with an exchange. If is_exchange is true, the refund reflects the value of goods returned in the exchange not the total money refunded..</param>
-        public V1Refund(TypeEnum? Type = default(TypeEnum?), string Reason = default(string), V1Money RefundedMoney = default(V1Money), string CreatedAt = default(string), string ProcessedAt = default(string), string PaymentId = default(string), string MerchantId = default(string), bool? IsExchange = default(bool?))
+        public V1Refund(RefundType? Type = default(RefundType?), string Reason = default(string), V1Money RefundedMoney = default(V1Money), string CreatedAt = default(string), string ProcessedAt = default(string), string PaymentId = default(string), string MerchantId = default(string), bool? IsExchange = default(bool?))
         {
             this.Type = Type;
             this.Reason = Reason;

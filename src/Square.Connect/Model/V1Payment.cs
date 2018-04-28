@@ -20,6 +20,8 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
+using System.Xml;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Square.Connect.Model
 {
@@ -29,6 +31,10 @@ namespace Square.Connect.Model
     [DataContract]
     public partial class V1Payment :  IEquatable<V1Payment>, IValidatableObject
     {
+        public V1Payment()
+        {
+
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="V1Payment" /> class.
         /// </summary>
@@ -89,13 +95,34 @@ namespace Square.Connect.Model
         /// </summary>
         /// <value>The payment&#39;s unique identifier.</value>
         [DataMember(Name="id", EmitDefaultValue=false)]
+        [Key]
+        [Column(Order = 2)]
         public string Id { get; set; }
+
+        [DataMember(Name = "LocationId", EmitDefaultValue = false)]
+        [Key]
+        [Column(Order = 1)]
+        public string LocationId { get; set; }
+
         /// <summary>
         /// The unique identifier of the merchant that took the payment.
         /// </summary>
         /// <value>The unique identifier of the merchant that took the payment.</value>
         [DataMember(Name="merchant_id", EmitDefaultValue=false)]
         public string MerchantId { get; set; }
+
+        public DateTime CreatedDate
+        {
+            get
+            {
+                return XmlConvert.ToDateTime(CreatedAt, XmlDateTimeSerializationMode.Local);
+            }
+            set
+            {
+                CreatedAt = XmlConvert.ToString(value, XmlDateTimeSerializationMode.Local);
+            }
+        }
+
         /// <summary>
         /// The time when the payment was created, in ISO 8601 format.
         /// </summary>
@@ -113,6 +140,7 @@ namespace Square.Connect.Model
         /// </summary>
         /// <value>The device that took the payment.</value>
         [DataMember(Name="device", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public Device Device { get; set; }
         /// <summary>
         /// The URL of the payment&#39;s detail page in the merchant dashboard. The merchant must be signed in to the merchant dashboard to view this page.
@@ -131,66 +159,77 @@ namespace Square.Connect.Model
         /// </summary>
         /// <value>The sum of all inclusive taxes associated with the payment.</value>
         [DataMember(Name="inclusive_tax_money", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public V1Money InclusiveTaxMoney { get; set; }
         /// <summary>
         /// The sum of all additive taxes associated with the payment.
         /// </summary>
         /// <value>The sum of all additive taxes associated with the payment.</value>
         [DataMember(Name="additive_tax_money", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public V1Money AdditiveTaxMoney { get; set; }
         /// <summary>
         /// The total of all taxes applied to the payment. This is always the sum of inclusive_tax_money and additive_tax_money.
         /// </summary>
         /// <value>The total of all taxes applied to the payment. This is always the sum of inclusive_tax_money and additive_tax_money.</value>
         [DataMember(Name="tax_money", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public V1Money TaxMoney { get; set; }
         /// <summary>
         /// The total of all tips applied to the payment.
         /// </summary>
         /// <value>The total of all tips applied to the payment.</value>
         [DataMember(Name="tip_money", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public V1Money TipMoney { get; set; }
         /// <summary>
         /// The total of all discounts applied to the payment.
         /// </summary>
         /// <value>The total of all discounts applied to the payment.</value>
         [DataMember(Name="discount_money", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public V1Money DiscountMoney { get; set; }
         /// <summary>
         /// The total of all discounts applied to the payment.
         /// </summary>
         /// <value>The total of all discounts applied to the payment.</value>
         [DataMember(Name="total_collected_money", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public V1Money TotalCollectedMoney { get; set; }
         /// <summary>
         /// The total of all processing fees collected by Square for the payment.
         /// </summary>
         /// <value>The total of all processing fees collected by Square for the payment.</value>
         [DataMember(Name="processing_fee_money", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public V1Money ProcessingFeeMoney { get; set; }
         /// <summary>
         /// The amount to be deposited into the merchant&#39;s bank account for the payment.
         /// </summary>
         /// <value>The amount to be deposited into the merchant&#39;s bank account for the payment.</value>
         [DataMember(Name="net_total_money", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public V1Money NetTotalMoney { get; set; }
         /// <summary>
         /// The total of all refunds applied to the payment.
         /// </summary>
         /// <value>The total of all refunds applied to the payment.</value>
         [DataMember(Name="refunded_money", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public V1Money RefundedMoney { get; set; }
         /// <summary>
         /// The total of all sales, including any applicable taxes, rounded to the smallest legal unit of currency (e.g., the nearest penny in USD, the nearest nickel in CAD)
         /// </summary>
         /// <value>The total of all sales, including any applicable taxes, rounded to the smallest legal unit of currency (e.g., the nearest penny in USD, the nearest nickel in CAD)</value>
         [DataMember(Name="swedish_rounding_money", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public V1Money SwedishRoundingMoney { get; set; }
         /// <summary>
         /// The total of all sales, including any applicable taxes.
         /// </summary>
         /// <value>The total of all sales, including any applicable taxes.</value>
         [DataMember(Name="gross_sales_money", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public V1Money GrossSalesMoney { get; set; }
         /// <summary>
         /// The total of all sales, minus any applicable taxes.
@@ -198,29 +237,49 @@ namespace Square.Connect.Model
         /// <value>The total of all sales, minus any applicable taxes.</value>
         [DataMember(Name="net_sales_money", EmitDefaultValue=false)]
         public V1Money NetSalesMoney { get; set; }
+
+        private decimal _netSales = 0;
+        [DataMember(Name = "ItemAmount", EmitDefaultValue = false)]
+        public decimal NetSales
+        {
+            get
+            {
+                _netSales = NetSalesMoney.MoneyToDecimal();
+                return _netSales;
+            }
+            set
+            {
+                _netSales = value;
+            }
+        }
+
         /// <summary>
         /// All of the inclusive taxes associated with the payment.
         /// </summary>
         /// <value>All of the inclusive taxes associated with the payment.</value>
         [DataMember(Name="inclusive_tax", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public List<V1PaymentTax> InclusiveTax { get; set; }
         /// <summary>
         /// All of the additive taxes associated with the payment.
         /// </summary>
         /// <value>All of the additive taxes associated with the payment.</value>
         [DataMember(Name="additive_tax", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public List<V1PaymentTax> AdditiveTax { get; set; }
         /// <summary>
         /// All of the additive taxes associated with the payment.
         /// </summary>
         /// <value>All of the additive taxes associated with the payment.</value>
         [DataMember(Name="tender", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public List<V1Tender> Tender { get; set; }
         /// <summary>
         /// All of the refunds applied to the payment. Note that the value of all refunds on a payment can exceed the value of all tenders if a merchant chooses to refund money to a tender after previously accepting returned goods as part of an exchange.
         /// </summary>
         /// <value>All of the refunds applied to the payment. Note that the value of all refunds on a payment can exceed the value of all tenders if a merchant chooses to refund money to a tender after previously accepting returned goods as part of an exchange.</value>
         [DataMember(Name="refunds", EmitDefaultValue=false)]
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public List<V1Refund> Refunds { get; set; }
         /// <summary>
         /// The items purchased in the payment.
@@ -270,7 +329,7 @@ namespace Square.Connect.Model
         /// <returns>JSON string presentation of the object</returns>
         public string ToJson()
         {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
+            return JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
         }
 
         /// <summary>

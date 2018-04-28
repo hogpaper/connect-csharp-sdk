@@ -29,6 +29,8 @@ namespace Square.Connect.Model
     [DataContract]
     public partial class V1PaymentItemDetail :  IEquatable<V1PaymentItemDetail>, IValidatableObject
     {
+        public V1PaymentItemDetail()
+        { }
         /// <summary>
         /// Initializes a new instance of the <see cref="V1PaymentItemDetail" /> class.
         /// </summary>
