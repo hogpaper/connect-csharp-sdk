@@ -21,6 +21,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
 using System.Xml;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Square.Connect.Model
 {
@@ -28,6 +29,7 @@ namespace Square.Connect.Model
     /// Represents a transaction processed with Square, either with the Connect API or with Square Point of Sale.  The &#x60;tenders&#x60; field of this object lists all methods of payment used to pay in the transaction.
     /// </summary>
     [DataContract]
+    [Table("SquareTransaction")]
     public partial class Transaction :  IEquatable<Transaction>, IValidatableObject
     {
         /// <summary>

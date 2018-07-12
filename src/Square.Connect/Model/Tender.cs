@@ -20,6 +20,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Square.Connect.Model
 {
@@ -27,6 +28,7 @@ namespace Square.Connect.Model
     /// Represents a tender (i.e., a method of payment) used in a Square transaction.
     /// </summary>
     [DataContract]
+    [Table("SquareTender")]
     public partial class Tender :  IEquatable<Tender>, IValidatableObject
     {
         /// <summary>

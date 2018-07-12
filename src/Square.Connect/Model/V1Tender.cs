@@ -152,7 +152,9 @@ namespace Square.Connect.Model
             /// Enum SQUAREGIFTCARDV2 for "SQUARE_GIFT_CARD_V2"
             /// </summary>
             [EnumMember(Value = "SQUARE_GIFT_CARD_V2")]
-            SQUAREGIFTCARDV2
+            SQUAREGIFTCARDV2,
+
+            UNION_PAY
         }
 
         /// <summary>

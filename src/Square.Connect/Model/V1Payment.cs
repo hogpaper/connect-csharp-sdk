@@ -29,6 +29,7 @@ namespace Square.Connect.Model
     /// V1Payment
     /// </summary>
     [DataContract]
+    [Table("SquareV1Payment")]
     public partial class V1Payment :  IEquatable<V1Payment>, IValidatableObject
     {
         public V1Payment()

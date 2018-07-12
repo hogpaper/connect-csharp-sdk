@@ -20,6 +20,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Square.Connect.Model
 {
@@ -27,6 +28,7 @@ namespace Square.Connect.Model
     /// Represents one of a business&#39;s locations.
     /// </summary>
     [DataContract]
+    [Table("SquareLocation")]
     public partial class Location :  IEquatable<Location>, IValidatableObject
     {
 

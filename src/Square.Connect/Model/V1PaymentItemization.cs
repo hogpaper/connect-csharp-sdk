@@ -20,6 +20,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Square.Connect.Model
 {
@@ -27,6 +28,7 @@ namespace Square.Connect.Model
     /// V1PaymentItemization
     /// </summary>
     [DataContract]
+    [Table("SquareV1PaymentItemization")]
     public partial class V1PaymentItemization :  IEquatable<V1PaymentItemization>, IValidatableObject
     {
         /// <summary>
